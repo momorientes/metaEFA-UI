@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/baasic-crud/baasic-crud.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+
+<polymer-element name="model-station" attributes="pk">
+    <template>
+        <baasic-crud id="crudElement"
+            geturl="{{baseUrl}}/{{version}}/station/{{pk}}/"
+            on-get-completed="{{handleGetCompleted}}"
+            on-get-error="{{handleGetError}}">
+        </baasic-crud>
+
+        <li style="margin:1em">
+            <div>
+                <paper-button on-click="{{showDeparturesAction}}" raised><core-icon icon="explore"></core-icon> {{data.name}}</paper-button>
+            </div>
+            <template if="{{showDepartures}}">
+                <div>
+                    <p>Departures</p>
+                    <model-departures stationId="{{data.stationId}}"></model-departures>
+                </div>
+            </template>
+        </li>
+    </template>
+    <script>
+        (function () {
+            Polymer('model-station', {
+                baseUrl: 'http://localhost:8000/api',
+                version: 'v1',
+                data: {},
+                showDepartures: false,
+                showDeparturesAction: function() {
+                    this.showDepartures = !this.showDepartures;
+                },
+                domReady: function() {
+                    return this.refresh();
+                },
+                refresh: function() {
+                    return this.$.crudElement.get({});
+                },
+                handleGetCompleted: function(e, response, element) {
+                    this.data = response.response;
+                },
+                handleGetError: function(e, response, element) {
+                    console.log({handleGetError: response});
+                    document.querySelector('#userNotifier').notify('Error getting station list');
+                },
+            });
+        })();
+    </script>
+</polymer-element>
