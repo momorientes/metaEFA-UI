@@ -1,0 +1,18 @@
+<polymer-element name="app-globals">
+    <script>
+        (function() {
+            // these variables are shared by all instances of app-globals
+            var values = {
+                appName: 'Meta EFA Hipster UI',
+                apiUrl: 'https://vvs-api.asw.io/api/v1',
+            }
+
+            Polymer({
+                ready: function() {
+                    // make global values available on instance.
+                    this.values = values;
+                }
+            });
+        })();
+    </script>
+</polymer-element>

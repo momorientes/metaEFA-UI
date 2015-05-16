@@ -1,60 +1,61 @@
 <!doctype html>
 <html lang="">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Meta EFA Hipster UI</title>
-  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Meta EFA Hipster UI</title>
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-  <!-- build:css styles/main.css -->
-  <link rel="stylesheet" href="styles/main.css">
-  <!-- endbuild-->
+        <!-- build:css styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild-->
 
-  <!-- build:js bower_components/webcomponentsjs/webcomponents.js -->
-  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
-  <!-- endbuild -->
+        <!-- build:js bower_components/webcomponentsjs/webcomponents.js -->
+        <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+        <!-- endbuild -->
 
-  <!-- will be replaced with elements/elements.vulcanized.html -->
-  <link rel="import" href="elements/elements.html">
-  <!-- endreplace-->
-</head>
+        <!-- will be replaced with elements/elements.vulcanized.html -->
+        <link rel="import" href="elements/elements.html">
+        <!-- endreplace-->
+    </head>
 
-<body unresolved fullbleed layout vertical>
-  <template is="auto-binding" id="app">
+    <body unresolved fullbleed layout vertical>
+        <template is="auto-binding" id="app">
+            <app-globals id="globals"></app-globals>
 
-    <core-drawer-panel>
+            <core-drawer-panel>
 
-      <!-- Drawer -->
-      <core-header-panel drawer>
+                <!-- Drawer -->
+                <core-header-panel drawer>
 
-      </core-header-panel>
+                </core-header-panel>
 
-      <!-- Main -->
-      <core-header-panel main>
+                <!-- Main -->
+                <core-header-panel main>
 
-        <!-- Main Toolbar -->
-        <core-toolbar>
-          <paper-icon-button icon="menu" core-drawer-toggle></paper-icon-button>
-          <span>{{appName}}</span>
-        </core-toolbar>
+                    <!-- Main Toolbar -->
+                    <core-toolbar>
+                        <paper-icon-button icon="menu" core-drawer-toggle></paper-icon-button>
+                        <span>{{$.globals.values.appName}}</span>
+                    </core-toolbar>
 
-        <!-- Main Content -->
-        <div class="hero-unit">
-            <model-station-list></model-station-list>
-        </div>
-      </core-header-panel>
-    </core-drawer-panel>
+                    <!-- Main Content -->
+                    <div class="hero-unit">
+                        <model-station-list></model-station-list>
+                    </div>
+                </core-header-panel>
+            </core-drawer-panel>
 
-  </template>
+        </template>
 
-  <user-notifier id="userNotifier"></user-notifier>
+        <user-notifier id="userNotifier"></user-notifier>
 
 
-  <!-- build:js scripts/app.js -->
-  <script src="scripts/app.js"></script>
-  <!-- endbuild-->
-</body>
+        <!-- build:js scripts/app.js -->
+        <!-- <script src="scripts/app.js"></script> -->
+        <!-- endbuild-->
+    </body>
 
 </html>

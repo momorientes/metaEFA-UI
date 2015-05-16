@@ -5,8 +5,9 @@
 
 <polymer-element name="model-departures" attributes="stationId">
     <template>
+        <app-globals id="globals"></app-globals>
         <baasic-crud id="crudElement"
-            geturl="{{baseUrl}}/{{version}}/station/{{stationId}}/departures/"
+            geturl="{{$.globals.values.apiUrl}}/station/{{stationId}}/departures/"
             on-get-completed="{{handleGetCompleted}}"
             on-get-error="{{handleGetError}}">
         </baasic-crud>
@@ -25,8 +26,6 @@
     <script>
         (function () {
             Polymer('model-departures', {
-                baseUrl: 'http://localhost:8000/api',
-                version: 'v1',
                 data: [],
                 domReady: function() {
                     return this.refresh();
