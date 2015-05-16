@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/baasic-crud/baasic-crud.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
 
 <polymer-element name="model-station-list" attributes="">
     <template>
@@ -9,16 +11,29 @@
             on-get-completed="{{handleGetCompleted}}"
             on-get-error="{{handleGetError}}">
         </baasic-crud>
-        <paper-input floatingLabel="true" label="Search station" value="{{search}}"></paper-input>
-
-        <h4>Found {{pks.length}} station<template if="{{pks.length!=1}}">s</template></h4>
-        <ul>
-            <template repeat="{{d in dataToShow}}">
-                <model-station id="station-{{d.stationId}}" pk="{{d.stationId}}"></model-station>
+        <style>
+            core-icon.big {
+                height: 32px;
+                width: 32px;
+                margin-top: 5em;
+            }
+        </style>
+        <div>
+            <core-icon class="big" icon="search"></core-icon><paper-input floatingLabel="true" label="Search station" value="{{search}}"></paper-input>
+            <template if="{{loading}}">
+                <paper-spinner active></paper-spinner>
             </template>
-        </ul>
-        <template if="{{data.length > 10}}">
-            <p>Only showing 10 stations...</p>
+        </div>
+        <template if="{{data.length}}">
+            <h4>Found {{pks.length}} station<template if="{{pks.length!=1}}">s</template></h4>
+            <div>
+                <template repeat="{{d in dataToShow}}">
+                    <model-station id="station-{{d.stationId}}" pk="{{d.stationId}}"></model-station>
+                </template>
+            </div>
+            <template if="{{data.length > 10}}">
+                <p>Only showing 10 stations...</p>
+            </template>
         </template>
     </template>
     <script>
@@ -28,6 +43,7 @@
                 version: 'v1',
                 data: [],
                 search: '',
+                loading: false,
                 extractKeys: function(list, keyName) {
                     return list.map(function(x) {return x[keyName];});
                 },
@@ -50,14 +66,16 @@
                     this.searchChangeTimeout = window.setTimeout(this.refresh.bind(this), 500);
                 },
                 refresh: function() {
-                    var params = {};
                     if(this.search.length) {
-                        params = {search: this.search};
+                        this.loading = true;
+                        this.$.crudElement.get({search: this.search});
+                    } else {
+                        this.data = [];
                     }
-                    return this.$.crudElement.get(params);
                 },
                 handleGetCompleted: function(e, response, element) {
                     this.data = response.response;
+                    this.loading = false;
                 },
                 handleGetError: function(e, response, element) {
                     console.log({handleGetError: response});

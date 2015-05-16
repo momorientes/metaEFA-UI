@@ -11,7 +11,7 @@
             on-get-error="{{handleGetError}}">
         </baasic-crud>
 
-        <li style="margin:1em">
+        <div style="margin:1em">
             <div>
                 <paper-button on-click="{{showDeparturesAction}}" raised><core-icon icon="explore"></core-icon> {{data.name}}</paper-button>
             </div>
@@ -21,7 +21,7 @@
                     <model-departures stationId="{{data.stationId}}"></model-departures>
                 </div>
             </template>
-        </li>
+        </div>
     </template>
     <script>
         (function () {
