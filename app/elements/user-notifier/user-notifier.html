@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+
+<polymer-element name="user-notifier" attributes="">
+    <template>
+        <paper-toast id="notificationToast" text="{{text}}" on-core-overlay-close-completed="{{closeAction}}"></paper-toast>
+    </template>
+    <script>
+        (function () {
+            Polymer('user-notifier', {
+                text: '',
+                closeAction: function(e, detail, sender){
+                    this.text = '';
+                },
+                notify: function(text) {
+                    var toast = this.$.notificationToast;
+                    if(toast.opened) {
+                        toast.dismiss();
+                    }
+                    this.text = text;
+                    toast.show();
+                }
+            });
+        })();
+    </script>
+</polymer-element>

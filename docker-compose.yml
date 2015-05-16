@@ -1,0 +1,16 @@
+data:
+  image: aexea/aexea-base
+  volumes:
+    - /home/uid1000
+web:
+    build: .
+    user: uid1000
+    # user: root
+    volumes:
+        - app:/opt/code/app
+        - bower.json:/opt/code/bower.json
+    volumes_from:
+        - data
+    command: "gulp serve"
+    ports:
+        - "3000:3000"
