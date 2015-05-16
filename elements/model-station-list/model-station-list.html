@@ -6,8 +6,9 @@
 
 <polymer-element name="model-station-list" attributes="">
     <template>
+        <app-globals id="globals"></app-globals>
         <baasic-crud id="crudElement"
-            geturl="{{baseUrl}}/{{version}}/station/"
+            geturl="{{$.globals.values.apiUrl}}/station/"
             on-get-completed="{{handleGetCompleted}}"
             on-get-error="{{handleGetError}}">
         </baasic-crud>
@@ -35,12 +36,13 @@
                 <p>Only showing 10 stations...</p>
             </template>
         </template>
+        <template if="{{!data.length && search.length && !loading && !searchChangeTimeout}}">
+            <h3>No stations found</h3>
+        </template>
     </template>
     <script>
         (function () {
             Polymer('model-station-list', {
-                baseUrl: 'http://localhost:8000/api',
-                version: 'v1',
                 data: [],
                 search: '',
                 loading: false,
@@ -76,10 +78,13 @@
                 handleGetCompleted: function(e, response, element) {
                     this.data = response.response;
                     this.loading = false;
+                    this.searchChangeTimeout = false;
                 },
                 handleGetError: function(e, response, element) {
                     console.log({handleGetError: response});
                     document.querySelector('#userNotifier').notify('Error getting station list');
+                    this.loading = false;
+                    this.searchChangeTimeout = false;
                 },
             });
         })();
