@@ -12,9 +12,9 @@
         </baasic-crud>
 
         <ul>
-            <template repeat="{{ departure in data}}">
+            <template repeat="{{d in data}}">
                 <li>
-                    {{ departure }}
+                    {{d.departureTime.hour}}:{{d.departureTime.minute}} Uhr: {{d.number}} =&gt; {{d.direction}}
                 </li>
             </template>
         </ul>
@@ -33,6 +33,7 @@
                 },
                 handleGetCompleted: function(e, response, element) {
                     this.data = response.response;
+                    console.log(this.data);
                 },
                 handleGetError: function(e, response, element) {
                     console.log({handleGetError: response});
