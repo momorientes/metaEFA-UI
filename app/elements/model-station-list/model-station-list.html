@@ -11,7 +11,7 @@
         </baasic-crud>
         <paper-input floatingLabel="true" label="Search station" value="{{search}}"></paper-input>
 
-        <h4>Found {{pks.length}} stations:</h4>
+        <h4>Found {{pks.length}} station<template if="{{pks.length!=1}}">s</template></h4>
         <ul>
             <template repeat="{{d in dataToShow}}">
                 <model-station id="station-{{d.stationId}}" pk="{{d.stationId}}"></model-station>

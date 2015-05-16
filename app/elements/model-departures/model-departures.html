@@ -14,10 +14,13 @@
         <ul>
             <template repeat="{{d in data}}">
                 <li>
-                    {{d.departureTime.hour}}:{{d.departureTime.minute}} Uhr: {{d.number}} =&gt; {{d.direction}}
+                    {{d.departureTime.hour}}:<template if="{{d.departureTime.minute<10}}">0</template>{{d.departureTime.minute}} Uhr: {{d.number}} =&gt; {{d.direction}}<template if="{{d.delay>0}}"> <span style="color:red"><strong>(+{{d.delay}})</strong></span></template>
                 </li>
             </template>
         </ul>
+        <template if="{{data.length == 0}}">
+            <p>No departures for this station now</p>
+        </template>
     </template>
     <script>
         (function () {
