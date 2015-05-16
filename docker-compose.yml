@@ -8,6 +8,7 @@ web:
     # user: root
     volumes:
         - app:/opt/code/app
+        - dist:/opt/code/dist
         - bower.json:/opt/code/bower.json
     volumes_from:
         - data

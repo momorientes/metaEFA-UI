@@ -38,7 +38,7 @@ var styleTask = function (stylesPath, srcs) {
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/' + stylesPath))
     .pipe($.if('*.css', $.cssmin()))
-    .pipe(gulp.dest('dist/' + stylesPath))
+    .pipe(gulp.dest('dist/build/' + stylesPath))
     .pipe($.size({title: stylesPath}));
 };
 
@@ -72,7 +72,7 @@ gulp.task('images', function () {
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/images'))
+    .pipe(gulp.dest('dist/build/images'))
     .pipe($.size({title: 'images'}));
 });
 
@@ -81,21 +81,21 @@ gulp.task('copy', function () {
   var app = gulp.src([
     'app/*',
     '!app/test',
-    'node_modules/apache-server-configs/dist/.htaccess'
+    'node_modules/apache-server-configs/dist/build/.htaccess'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'));
+  }).pipe(gulp.dest('dist/build'));
 
   var bower = gulp.src([
     'bower_components/**/*'
-  ]).pipe(gulp.dest('dist/bower_components'));
+  ]).pipe(gulp.dest('dist/build/bower_components'));
 
   var elements = gulp.src(['app/elements/**/*.html'])
-    .pipe(gulp.dest('dist/elements'));
+    .pipe(gulp.dest('dist/build/elements'));
 
   var vulcanized = gulp.src(['app/elements/elements.html'])
     .pipe($.rename('elements.vulcanized.html'))
-    .pipe(gulp.dest('dist/elements'));
+    .pipe(gulp.dest('dist/build/elements'));
 
   return merge(app, bower, elements, vulcanized).pipe($.size({title: 'copy'}));
 });
@@ -103,13 +103,13 @@ gulp.task('copy', function () {
 // Copy Web Fonts To Dist
 gulp.task('fonts', function () {
   return gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest('dist/fonts'))
+    .pipe(gulp.dest('dist/build/fonts'))
     .pipe($.size({title: 'fonts'}));
 });
 
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
+  var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist/build']});
 
   return gulp.src(['app/**/*.html', '!app/{elements,test}/**/*.html'])
     // Replace path for vulcanized assets
@@ -129,15 +129,15 @@ gulp.task('html', function () {
       spare: true
     })))
     // Output Files
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist/build'))
     .pipe($.size({title: 'html'}));
 });
 
 // Vulcanize imports
 gulp.task('vulcanize', function () {
-  var DEST_DIR = 'dist/elements';
+  var DEST_DIR = 'dist/build/elements';
 
-  return gulp.src('dist/elements/elements.vulcanized.html')
+  return gulp.src('dist/build/elements/elements.vulcanized.html')
     .pipe($.vulcanize({
       dest: DEST_DIR,
       strip: true,
@@ -148,7 +148,7 @@ gulp.task('vulcanize', function () {
 });
 
 // Clean Output Directory
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+gulp.task('clean', del.bind(null, ['.tmp', 'dist/build']));
 
 // Watch Files For Changes & Reload
 gulp.task('serve', ['styles', 'elements'], function () {
@@ -174,14 +174,14 @@ gulp.task('serve', ['styles', 'elements'], function () {
 });
 
 // Build and serve the output from the dist build
-gulp.task('serve:dist', ['default'], function () {
+gulp.task('serve:dist/build', ['default'], function () {
   browserSync({
     notify: false,
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: 'dist'
+    server: 'dist/build'
   });
 });
 
