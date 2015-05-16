@@ -19,26 +19,32 @@
                 </li>
             </template>
         </ul>
-        <template if="{{data.length == 0}}">
+        <template if="{{data.length == 0 and !loading}}">
             <p>No departures for this station now</p>
+        </template>
+        <template if="{{loading}}">
+            <paper-spinner active></paper-spinner>
         </template>
     </template>
     <script>
         (function () {
             Polymer('model-departures', {
                 data: [],
+                loading: false,
                 domReady: function() {
                     return this.refresh();
                 },
                 refresh: function() {
+                    this.loading = true;
                     return this.$.crudElement.get({});
                 },
                 handleGetCompleted: function(e, response, element) {
                     this.data = response.response;
-                    console.log(this.data);
+                    this.loading = false;
                 },
                 handleGetError: function(e, response, element) {
                     console.log({handleGetError: response});
+                    this.loading = false;
                     document.querySelector('#userNotifier').notify('Error getting station list');
                 },
             });
